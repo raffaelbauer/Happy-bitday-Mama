@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles Gute zum Geburtstag!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffcccb;
+            color: #333;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #e63946;
+            font-size: 2.5em;
+            margin: 20px;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn {
+            background-color: #e63946;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            position: relative;
+        }
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            color: #e63946;
+            animation: shootUp 0.7s ease-out, driftDown 7s ease-in 0.7s forwards;
+        }
+        @keyframes shootUp {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            50% { transform: translate(var(--x-move), var(--y-move)) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x-end), var(--y-end)) scale(1.2); opacity: 1; }
+        }
+        @keyframes driftDown {
+            0% { opacity: 1; }
+            100% { transform: translate(0, 100vh) scale(0.5); opacity: 0; }
+        }
+        /* Mobile Anpassungen */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .btn {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Alles Gute zum Geburtstag, Mama!</h1>
+
+    <div class="card">
+        <p>Liebe Mama,</p>
+        <p>Ich wünsche dir alles Liebe und Gute zu deinem Geburtstag. Danke für alles, was du für mich tust. Ich habe dich lieb!</p>
+        <p>Dein Raffael</p>
+        <div class="btn" onclick="startHeartRain(this)">Drück mich für eine Überraschung!</div>
+    </div>
+
+    <!-- Audio für den Sound-Effekt -->
+    <audio id="heartSound" src="herz-sound.mp3"></audio>
+
+    <script>
+        function startHeartRain(button) {
+            const sound = document.getElementById("heartSound");
+            sound.play();  // Sound abspielen
+
+            for (let i = 0; i < 150; i++) {  // Anzahl der Herzen erhöht
+                createHeart(button);
+            }
+        }
+
+        function createHeart(button) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤️';
+            
+            // Herz startet in der Mitte des Knopfes
+            const rect = button.getBoundingClientRect();
+            heart.style.left = `${rect.left + rect.width / 2}px`;
+            heart.style.top = `${rect.top + rect.height / 2}px`;
+
+            // Zufällige Bewegungsrichtung und Endposition für jedes Herz
+            heart.style.setProperty('--x-move', `${Math.random() * 300 - 150}px`);
+            heart.style.setProperty('--y-move', `${Math.random() * -250 - 100}px`);  // höherer Aufstieg
+            heart.style.setProperty('--x-end', `${Math.random() * 400 - 200}px`);
+            heart.style.setProperty('--y-end', `${Math.random() * -400 - 300}px`);  // Endposition höher
+
+            heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+            heart.style.fontSize = Math.random() * 1.5 + 1 + 'em';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);  // Herzen bleiben länger
+        }
+    </script>
+
+</body>
+</html>
